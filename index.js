@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const router = require('express').Router();
+const bodyparser = require('body-parser');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
@@ -12,15 +12,22 @@ mongoose.connect(process.env.DB_CONNECT, { useNewUrlParser: true }, () =>
   console.log('DB connection established!')
 );
 
+// Statics
+app.set('vew engine', 'ejs');
+
 // Middlewares
 
+app.use(bodyparser.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Importing Routes
 
+const homeRoute = require('./routes/index');
 const authRoute = require('./routes/auth');
 
 // Routes Middlewares
+
+app.use('/', homeRoute);
 
 app.use('/user', authRoute);
 

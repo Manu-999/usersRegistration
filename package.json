@@ -1,0 +1,25 @@
+{
+  "name": "manuel-balbas",
+  "version": "1.0.0",
+  "description": "¡ Gracias por querer realizar nuestra prueba para poder optar al puesto de Node.JS Developer! En esta prueba queremos ver que tal se te da codear y si tu estilo coincide con el nuestro.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://manu-999@bitbucket.org/aluxion/manuel-balbas.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/aluxion/manuel-balbas#readme",
+  "devDependencies": {
+    "nodemon": "^1.19.4"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

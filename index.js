@@ -17,19 +17,22 @@ app.set('vew engine', 'ejs');
 
 // Middlewares
 
-app.use(bodyparser.urlencoded({ extended: true }));
+app.use(bodyparser.urlencoded({ extended: false }));
 app.use(express.json());
 
 // Importing Routes
 
 const homeRoute = require('./routes/index');
 const authRoute = require('./routes/auth');
+const recoverRoute = require('./routes/recoverPassword');
 
 // Routes Middlewares
 
 app.use('/', homeRoute);
 
 app.use('/user', authRoute);
+
+app.use('/user', recoverRoute);
 
 // Server
 

@@ -63,9 +63,15 @@ router.post('/login', async (req, res) => {
   // Creating a token and assigning to the user
 
   const token = jwt.sign({ id: user._id }, process.env.TOKEN_SECRET);
-  res.header('auth-token', token).render('welcome.ejs');
+  res
+    .header('auth-token', token)
+    .render('welcome.ejs', { username: req.body.username });
 
   // res.send('Logged in');
+});
+
+router.get('/reset', (req, res) => {
+  res.render('recoverPassword.ejs');
 });
 
 module.exports = router;

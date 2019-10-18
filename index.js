@@ -25,6 +25,7 @@ app.use(express.json());
 const homeRoute = require('./routes/index');
 const authRoute = require('./routes/auth');
 const recoverRoute = require('./routes/recoverPassword');
+const filesRoute = require('./routes/files');
 
 // Routes Middlewares
 
@@ -33,6 +34,8 @@ app.use('/', homeRoute);
 app.use('/user', authRoute);
 
 app.use('/user', recoverRoute);
+
+app.use('/files', filesRoute);
 
 // Server
 

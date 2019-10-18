@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
 // Reset password
 
@@ -25,28 +26,34 @@ router
 
 // Reset link
 
+const userId = [];
+
 router
   .get(`/reset/password`, (req, res) => {
     const tokenUrl = req.query.token;
 
     try {
       const verified = jwt.verify(tokenUrl, process.env.TOKEN_SECRET);
-      console.log(verified);
+      // console.log(verified.id);
+      userId.push(verified.id);
       res.render('resetPassword.ejs');
     } catch (error) {
       res.status(400).send('Invalid token');
+      console.log(error);
     }
   })
   .post('/reset/password', async (req, res) => {
-    const tokenUrl = req.headers['auth-token'];
-    console.log(tokenUrl);
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(req.body.newpassword, salt);
 
-    try {
-      const verified = jwt.verify(tokenUrl, process.env.TOKEN_SECRET);
-      console.log(verified.id);
-      const userUpdate = await User.findOneAndUpdate({ password: newpassword });
-    } catch (error) {
-      res.status(400).send('Invalid token');
+    const userExist = await User.findOneAndUpdate(
+      { _id: userId },
+      { password: hashedPassword }
+    );
+    if (!userExist) {
+      res.status(400).send('Invalid update');
+    } else {
+      res.status(200).send('Password updated!');
     }
   });
 

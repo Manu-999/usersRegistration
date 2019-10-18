@@ -2,6 +2,9 @@ const router = require('express').Router();
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const nodemailer = require('nodemailer');
+
+const userId = [];
 
 // Reset password
 
@@ -15,18 +18,35 @@ router
     if (user) {
       const token = jwt.sign({ id: user._id }, process.env.TOKEN_SECRET);
       const url = `http://localhost:3000/user/reset/password?token=${token}`;
-      res
-        .status(200)
-        .header('auth-token', token)
-        .send(url);
+      const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: 'pruebasmanueldev@gmail.com',
+          pass: process.env.EMAIL_PASSWORD
+        }
+      });
+
+      const mailOptions = {
+        from: 'pruebasmanueldev@gmail.com',
+        to: req.body.email,
+        subject: 'Recover your password',
+        text: url
+      };
+
+      transporter.sendMail(mailOptions, function(error, info) {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Email sent: ' + info.response);
+        }
+      });
+      res.status(200).send('Email sent');
     } else {
       res.status(400).send('Email not found!');
     }
   });
 
 // Reset link
-
-const userId = [];
 
 router
   .get(`/reset/password`, (req, res) => {
